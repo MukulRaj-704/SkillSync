@@ -1,0 +1,23 @@
+<h2>Login</h2>
+
+<form method="POST">
+  {% csrf_token %}
+
+  <label>Email:</label>
+  <input type="email" name="email" required />
+  <br /><br />
+
+  <label>Password:</label>
+  <input type="password" name="password" required />
+  <br /><br />
+
+  <button type="submit">Login</button>
+</form>
+
+<p><a href="{% url 'register' %}">Create new account</a></p>
+
+{% if messages %}
+  {% for message in messages %}
+    <p>{{ message }}</p>
+  {% endfor %}
+{% endif %}

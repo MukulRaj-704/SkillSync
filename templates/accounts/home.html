@@ -1,0 +1,14 @@
+<h2>Home</h2>
+
+<p>Welcome: {{ request.user.email }}</p>
+
+<p>Your Roles:</p>
+<ul>
+  {% for g in request.user.groups.all %}
+    <li>{{ g.name }}</li>
+  {% empty %}
+    <li>No group assigned</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'logout' %}">Logout</a>
