@@ -1,14 +1,31 @@
 <h2>Home</h2>
 
-<p>Welcome: {{ request.user.email }}</p>
+{% if request.user.is_authenticated %}
+  <p>Welcome: {{ request.user.email }}</p>
 
-<p>Your Roles:</p>
-<ul>
-  {% for g in request.user.groups.all %}
-    <li>{{ g.name }}</li>
-  {% empty %}
-    <li>No group assigned</li>
-  {% endfor %}
-</ul>
+  <p>Your Roles:</p>
+  <ul>
+    {% for g in request.user.groups.all %}
+      <li>{{ g.name }}</li>
+    {% empty %}
+      <li>No group assigned</li>
+    {% endfor %}
+  </ul>
 
-<a href="{% url 'logout' %}">Logout</a>
+  <hr />
+
+  <h3>Account</h3>
+  <a href="{% url 'my_profile' %}">My Profile</a>
+  <br />
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <br />
+  <a href="{% url 'password_change' %}">Change Password</a>
+  <br /><br />
+
+  <a href="{% url 'logout' %}">Logout</a>
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Login</a> |
+  <a href="{% url 'register' %}">Register</a>
+{% endif %}

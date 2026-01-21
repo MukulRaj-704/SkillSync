@@ -1,0 +1,15 @@
+<h2>Edit Profile</h2>
+
+<form method="POST">
+  {% csrf_token %}
+
+  <h3>Account Info</h3>
+  {{ account_form.as_p }}
+
+  <h3>Profile Info</h3>
+  {{ profile_form.as_p }}
+
+  <button type="submit">Save</button>
+</form>
+
+<a href="{% url 'my_profile' %}">Back</a>

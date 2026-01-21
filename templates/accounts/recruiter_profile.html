@@ -1,0 +1,10 @@
+<h2>Recruiter Profile</h2>
+
+<p>Email: {{ request.user.email }}</p>
+<p>Contact: {{ profile.contact_number }}</p>
+<p>Company Name: {{ profile.company_name }}</p>
+<p>Designation: {{ profile.designation }}</p>
+<p>Website: {{ profile.company_website }}</p>
+<p>Location: {{ profile.company_location }}</p>
+
+<a href="{% url 'edit_profile' %}">Edit Profile</a>

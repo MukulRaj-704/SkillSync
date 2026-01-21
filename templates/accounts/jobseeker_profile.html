@@ -1,0 +1,9 @@
+<h2>Job Seeker Profile</h2>
+
+<p>Email: {{ request.user.email }}</p>
+<p>Contact: {{ profile.contact_number }}</p>
+<p>Graduation: {{ profile.graduation }}</p>
+<p>Skills: {{ profile.skills }}</p>
+<p>City: {{ profile.city }}</p>
+
+<a href="{% url 'edit_profile' %}">Edit Profile</a>
