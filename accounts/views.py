@@ -15,6 +15,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from .forms import CustomUserCreationForm
+from .decorators import recruiter_required, jobseeker_required
+
 
 
 @login_required
@@ -57,7 +59,13 @@ def loginView(request):
 
         if user is not None:
             login(request, user)
-            return redirect("home")
+            if user.groups.filter(name="recruiter").exists():
+                return redirect("recruiter_dashboard")
+            elif user.groups.filter(name="job_seeker").exists():
+                return redirect("jobseeker_dashboard")
+            else:
+                return redirect("home")
+
         else:
             messages.error(request, "Invalid email or password ❌")
 
@@ -91,7 +99,11 @@ def edit_profile(request):
 
     if request.user.groups.filter(name="job_seeker").exists():
         profile, _ = JobSeekerProfile.objects.get_or_create(user=request.user)
-        profile_form = JobSeekerProfileForm(request.POST or None, instance=profile)
+        profile_form = JobSeekerProfileForm(
+            request.POST or None,
+            request.FILES or None,
+            instance=profile
+        )
 
     elif request.user.groups.filter(name="recruiter").exists():
         profile, _ = RecruiterProfile.objects.get_or_create(user=request.user)
@@ -131,3 +143,55 @@ def is_jobseeker(user):
 
 def is_recruiter(user):
     return user.groups.filter(name="recruiter").exists()
+
+@login_required
+@jobseeker_required
+def jobseeker_dashboard(request):
+    if not request.user.groups.filter(name="job_seeker").exists():
+        messages.error(request, "Access denied")
+        return redirect("home")
+    return render(request, "accounts/jobseeker_dashboard.html")
+
+from .decorators import recruiter_required, jobseeker_required
+
+@login_required
+@recruiter_required
+def recruiter_dashboard(request):
+    if not request.user.groups.filter(name="recruiter").exists():
+        messages.error(request, "Access denied")
+        return redirect("home")
+    return render(request, "accounts/recruiter_dashboard.html")
+
+from .profile_checks import profile_complete_required
+from .decorators import jobseeker_required
+
+@login_required
+@jobseeker_required
+@profile_complete_required
+def test_apply(request):
+    return render(request, "accounts/test_apply.html")
+
+
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from .models import JobSeekerProfile
+from .decorators import recruiter_required
+@login_required
+@recruiter_required
+def jobseeker_list(request):
+    User = get_user_model()
+    jobseekers = User.objects.filter(groups__name="job_seeker").distinct()
+    return render(request, "accounts/jobseeker_list.html", {"jobseekers": jobseekers})
+
+@login_required
+@recruiter_required
+def recruiter_view_jobseeker_profile(request, user_id):
+    User = get_user_model()
+    jobseeker_user = get_object_or_404(User, id=user_id, groups__name="job_seeker")
+
+    profile, _ = JobSeekerProfile.objects.get_or_create(user=jobseeker_user)
+
+    return render(request, "accounts/recruiter_view_jobseeker_profile.html", {
+        "jobseeker_user": jobseeker_user,
+        "profile": profile
+    })

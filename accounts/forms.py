@@ -26,7 +26,18 @@ User = get_user_model()
 class JobSeekerProfileForm(forms.ModelForm):
     class Meta:
         model = JobSeekerProfile
-        fields = ["contact_number", "graduation", "skills", "city"]
+        fields = [
+            "contact_number",
+            "graduation",
+            "skills",
+            "city",
+            "resume",
+            "github_url",
+            "linkedin_url",
+            "leetcode_url",
+            "portfolio_url",
+        ]
+
 
 
 class RecruiterProfileForm(forms.ModelForm):

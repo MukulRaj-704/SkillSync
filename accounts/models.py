@@ -50,7 +50,11 @@ class JobSeekerProfile(models.Model):
     graduation = models.CharField(max_length=150, blank=True)
     skills = models.TextField(blank=True)
     city = models.CharField(max_length=100, blank=True)
-
+    resume = models.FileField(upload_to="resumes/", blank=True, null=True)
+    github_url = models.URLField(blank=True)
+    linkedin_url = models.URLField(blank=True)
+    leetcode_url = models.URLField(blank=True)
+    portfolio_url = models.URLField(blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

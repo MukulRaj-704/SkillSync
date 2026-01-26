@@ -1,0 +1,8 @@
+<h2>Recruiter Dashboard</h2>
+
+<p>Welcome {{ request.user.email }}</p>
+
+<a href="{% url 'my_profile' %}">My Profile</a> <br>
+<a href="{% url 'edit_profile' %}">Edit Profile</a> <br>
+<a href="{% url 'logout' %}">Logout</a><br>
+<a href="{% url 'jobseeker_list' %}">View Job Seekers</a><br>

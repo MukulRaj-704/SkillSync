@@ -1,0 +1,10 @@
+<h2>Job Seekers List (Recruiter)</h2>
+
+{% for u in jobseekers %}
+  <p>
+    {{ u.email }}
+    - <a href="{% url 'recruiter_view_jobseeker_profile' u.id %}">View Profile</a>
+  </p>
+{% empty %}
+  <p>No job seekers found.</p>
+{% endfor %}

@@ -1,0 +1,36 @@
+<h2>Job Seeker Profile</h2>
+
+<p><b>Name:</b> {{ jobseeker_user.full_name }}</p>
+<p><b>Email:</b> {{ jobseeker_user.email }}</p>
+
+<p><b>Contact:</b> {{ profile.contact_number }}</p>
+<p><b>Graduation:</b> {{ profile.graduation }}</p>
+<p><b>Skills:</b> {{ profile.skills }}</p>
+<p><b>City:</b> {{ profile.city }}</p>
+
+<hr />
+
+<h3>Links</h3>
+
+{% if profile.github_url %}
+  <p><b>GitHub:</b> <a href="{{ profile.github_url }}" target="_blank">Open</a></p>
+{% endif %}
+
+{% if profile.linkedin_url %}
+  <p><b>LinkedIn:</b> <a href="{{ profile.linkedin_url }}" target="_blank">Open</a></p>
+{% endif %}
+
+{% if profile.leetcode_url %}
+  <p><b>LeetCode:</b> <a href="{{ profile.leetcode_url }}" target="_blank">Open</a></p>
+{% endif %}
+
+{% if profile.portfolio_url %}
+  <p><b>Portfolio:</b> <a href="{{ profile.portfolio_url }}" target="_blank">Open</a></p>
+{% endif %}
+
+{% if profile.resume %}
+  <p><b>Resume:</b> <a href="{{ profile.resume.url }}" target="_blank">View Resume</a></p>
+{% endif %}
+
+<br />
+<a href="{% url 'jobseeker_list' %}">Back to list</a>
