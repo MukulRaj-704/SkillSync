@@ -1,0 +1,11 @@
+<h2>Create Job (Recruiter Only)</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Post Job</button>
+</form>
+
+<br>
+
+<a href="{% url 'job_list' %}">Back to Jobs</a>

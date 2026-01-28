@@ -153,14 +153,26 @@ def jobseeker_dashboard(request):
     return render(request, "accounts/jobseeker_dashboard.html")
 
 from .decorators import recruiter_required, jobseeker_required
+from jobs.models import Job
+from applications.models import Application
+from django.db.models import Count
 
 @login_required
 @recruiter_required
 def recruiter_dashboard(request):
-    if not request.user.groups.filter(name="recruiter").exists():
-        messages.error(request, "Access denied")
-        return redirect("home")
-    return render(request, "accounts/recruiter_dashboard.html")
+    jobs = (
+        Job.objects
+        .filter(recruiter=request.user)
+        .annotate(applicant_count=Count("applications"))
+        .order_by("-created_at")
+    )
+
+    total_jobs = jobs.count()
+
+    return render(request, "accounts/recruiter_dashboard.html", {
+        "jobs": jobs,
+        "total_jobs": total_jobs,
+    })
 
 from .profile_checks import profile_complete_required
 from .decorators import jobseeker_required

@@ -1,0 +1,30 @@
+<h2>My Applications</h2>
+
+{% for app in applications %}
+  <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    <h3>{{ app.job.title }}</h3>
+    <p><b>Company:</b> {{ app.job.company_name }}</p>
+
+    <p>
+  <b>Status:</b>
+  {% if app.status == "applied" %}
+    🟡 Under consideration
+  {% elif app.status == "shortlisted" %}
+    ✅ You are shortlisted
+  {% elif app.status == "rejected" %}
+    ❌ Not selected
+  {% elif app.status == "withdrawn" %}
+    ⚪ Withdrawn by you
+  {% endif %}
+    </p>
+    {% if app.status == "applied" %}
+  <form method="POST" action="{% url 'withdraw_application' app.id %}">
+    {% csrf_token %}
+    <button type="submit">Withdraw Application</button>
+  </form>
+{% endif %}
+
+  </div>
+{% empty %}
+  <p>No applications yet.</p>
+{% endfor %}

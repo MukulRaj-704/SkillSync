@@ -1,0 +1,43 @@
+<h2>All Jobs</h2>
+
+<form method="GET">
+  <input type="text" name="title" placeholder="Job title" value="{{ title }}">
+  <input type="text" name="location" placeholder="Location" value="{{ location }}">
+  <input type="text" name="company" placeholder="Company" value="{{ company }}">
+  <button type="submit">Search</button>
+</form>
+
+<hr>
+
+{% for job in page_obj %}
+  <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    <h3>{{ job.title }}</h3>
+    <p><b>Company:</b> {{ job.company_name }}</p>
+    <p><b>Location:</b> {{ job.location }}</p>
+
+    <a href="{% url 'job_detail' job.id %}">View Details</a>
+  </div>
+{% empty %}
+  <p>No jobs available.</p>
+{% endfor %}
+
+<hr>
+
+<!-- PAGINATION -->
+<div>
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}&title={{ title }}&location={{ location }}&company={{ company }}">
+      Previous
+    </a>
+  {% endif %}
+
+  <span>
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}&title={{ title }}&location={{ location }}&company={{ company }}">
+      Next
+    </a>
+  {% endif %}
+</div>

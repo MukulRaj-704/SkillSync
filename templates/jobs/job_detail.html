@@ -1,0 +1,40 @@
+{% if messages %}
+  {% for message in messages %}
+    <p>{{ message }}</p>
+  {% endfor %}
+{% endif %}
+
+<h2>{{ job.title }}</h2>
+<p><b>Company:</b> {{ job.company_name }}</p>
+<p><b>Location:</b> {{ job.location }}</p>
+<p>{{ job.description }}</p>
+
+<p>
+  <b>Status:</b>
+  {% if job.is_active %}
+    <span style="color: green;">Open</span>
+  {% else %}
+    <span style="color: red;">Closed</span>
+  {% endif %}
+</p>
+
+{% if is_job_seeker %}
+  {% if job.is_active %}
+    {% if has_applied %}
+      <p>✔ Already Applied</p>
+    {% else %}
+      <a href="{% url 'apply_job' job.id %}"><button>Apply</button></a>
+    {% endif %}
+  {% else %}
+    <p><b>Applications closed</b></p>
+  {% endif %}
+{% endif %}
+
+{% if is_recruiter_owner %}
+  <a href="{% url 'job_applicants' job.id %}">
+    <button>View Applicants</button>
+  </a>
+{% endif %}
+
+<br><br>
+<a href="{% url 'job_list' %}">Back</a>

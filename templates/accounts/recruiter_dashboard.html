@@ -1,7 +1,47 @@
 <h2>Recruiter Dashboard</h2>
 
 <p>Welcome {{ request.user.email }}</p>
+<hr>
 
+<a href="{% url 'create_job' %}">
+  <button>➕ Post Job</button>
+</a>
+<p><b>Total Jobs Posted:</b> {{ total_jobs }}</p>
+
+<hr>
+
+<h3>Your Jobs</h3>
+
+{% for job in jobs %}
+  <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    <h4>{{ job.title }}</h4>
+    <p><b>Company:</b> {{ job.company_name }}</p>
+    <p><b>Total Applicants:</b> {{ job.applicant_count }}</p>
+
+    <a href="{% url 'job_detail' job.id %}">View Job</a> |
+    <a href="{% url 'job_applicants' job.id %}">View Applicants</a>
+    <p>
+  <b>Status:</b>
+  {% if job.is_active %}
+    <span style="color: green;">Open</span>
+  {% else %}
+    <span style="color: red;">Closed</span>
+  {% endif %}
+</p>
+
+{% if job.is_active %}
+  | <a href="{% url 'close_job' job.id %}">Close Job</a>
+{% endif %}
+  </div>
+{% empty %}
+  <p>You have not posted any jobs yet.</p>
+{% endfor %}
+
+<hr>
+<br><br>
+<a href="{% url 'job_list' %}">View Jobs</a>
+
+<br><br>
 <a href="{% url 'my_profile' %}">My Profile</a> <br>
 <a href="{% url 'edit_profile' %}">Edit Profile</a> <br>
 <a href="{% url 'logout' %}">Logout</a><br>

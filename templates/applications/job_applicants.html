@@ -1,0 +1,29 @@
+<h2>Applicants for {{ job.title }}</h2>
+
+<p>
+  <a href="?">All</a> |
+  <a href="?status=applied">Applied</a> |
+  <a href="?status=shortlisted">Shortlisted</a>
+</p>
+
+<hr>
+
+{% for app in applications %}
+  <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    <p><b>Email:</b> {{ app.applicant.email }}</p>
+    <p><b>Status:</b> {{ app.status|title }}</p>
+
+    <a href="{% url 'recruiter_view_jobseeker_profile' app.applicant.id %}">
+      View Profile
+    </a>
+
+    {% if app.status == "applied" %}
+      | <a href="{% url 'shortlist_application' app.id %}">Shortlist</a>
+      | <a href="{% url 'reject_application' app.id %}">Reject</a>
+    {% endif %}
+  </div>
+{% empty %}
+  <p>No applicants found.</p>
+{% endfor %}
+
+<a href="{% url 'job_list' %}">Back</a>
